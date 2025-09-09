@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './App.css'
 import LandingPage from './pages/landingPage'
-import Authentication from './pages/authentication' 
+import Authentication from './pages/Authentication.jsx'
 
 function App() {
   return (
