@@ -135,9 +135,9 @@ export default function SignInSide() {
                 id="password"
                  onChange={(e) => setPassword(e.target.value)}
               />
-              <p style={{color: "red"}}>*{error}</p>
+              <p style={{color: "red"}}>{error}</p>
                <Button
-              onClick={handleAuth}
+                   onClick={handleAuth}
                       fullWidth
                      variant="contained"
                      sx={{ mt: 3, mb: 2 }}
@@ -148,11 +148,20 @@ export default function SignInSide() {
           </Box>
         </Grid>
       </Grid>
-           <Snackbar 
-            open={open}
-            autoHideDuration={6000}
-            message={message}
-           />
+           <Snackbar
+  open={open}
+  autoHideDuration={6000}
+  message={message}
+  ContentProps={{
+    style: {
+      backgroundColor: "#1976d2", // Blue background
+      color: "white",             // White text
+      fontWeight: "bold",
+      borderRadius: "8px",
+      textAlign: "center",
+    },
+  }}
+/>
     </ThemeProvider>
   );
 }

@@ -17,9 +17,9 @@ export const AuthProvider = ({ children }) => {
   const handleRegister = async (name, username, password) => {
     try {
       const request = await client.post("/register", {
-        name,
-        username,
-        password,
+        name:name,
+        username:username,
+        password:password,
       });
 
       if (request.status === httpStatus.CREATED) {
@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = async (username, password) => {
     try {
       const request = await client.post("/login", {
-        username,
-        password,
+        username:username,
+        password:password,
       });
 
       if (request.status === httpStatus.OK) {
