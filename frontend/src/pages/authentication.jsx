@@ -12,6 +12,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Snackbar from '@mui/material/Snackbar';
+import { AuthContext } from "../contexts/AuthContext.jsx";
+
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -25,13 +28,34 @@ export default function SignInSide() {
     const [password, setPassword] = React.useState();
     const [name, setName] = React.useState();
      const [error, setError] = React.useState("");
-     const [messages, setMessages] = React.useState([]);
+     const [message, setMessage] = React.useState("");
 
 
     const [formState, setFormState] = React.useState(0);
     const[open, setOpen] = React.useState(false);
 
-   
+    const {handleRegister, handleLogin} =  React.useContext(AuthContext); 
+
+   const handleAuth = async ()=>{
+    try{
+       if(formState === 0){
+          let result = await handleLogin(username, password);
+          console.log(result);
+          setMessage(result);
+          setOpen(true);
+       }  
+       if(formState === 1){
+         let result = await handleRegister(name, username, password);
+         console.log(result);
+         setMessage(result);
+         setOpen(true); 
+       }
+    }catch(error){
+     let message = error.response?.data?.message || "Something went wrong";
+      setError(message);
+    }
+   }
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -75,7 +99,7 @@ export default function SignInSide() {
                  </Button>
                </div>
             <Box component="form" noValidate  sx={{ mt: 1 }}>
-              
+
              { formState === 1 ? 
               <TextField
                 margin="normal"
@@ -111,22 +135,24 @@ export default function SignInSide() {
                 id="password"
                  onChange={(e) => setPassword(e.target.value)}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign In
+              <p style={{color: "red"}}>*{error}</p>
+               <Button
+              onClick={handleAuth}
+                      fullWidth
+                     variant="contained"
+                     sx={{ mt: 3, mb: 2 }}
+               >
+               {formState === 0 ? "Sign In" : "Sign Up"}
               </Button>
             </Box>
           </Box>
         </Grid>
       </Grid>
+           <Snackbar 
+            open={open}
+            autoHideDuration={6000}
+            message={message}
+           />
     </ThemeProvider>
   );
 }
